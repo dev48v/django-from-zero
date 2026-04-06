@@ -1,16 +1,26 @@
 Day 8 - React? Next.js? Nah. I built a full news aggregator with Django templates. Server-side rendering. Zero JavaScript. Real API data.
 
+
+
 🚀TechFromZero Series - DjangoFromZero
+
+
+
+🌐 Try it live: https://django-from-zero.onrender.com
+
+
 
 This isn't a Hello World. It's a real server-rendered news aggregator:
 
 📐 GNews API → Django Views → Templates → HTML → Browser (zero JS, full SSR)
 
-🌐 Try it live: https://django-from-zero.onrender.com
+
 
 🔗 The full code (with step-by-step commits you can follow):
 
 https://github.com/dev48v/django-from-zero
+
+
 
 🧱 What I built (step by step):
 
@@ -34,12 +44,22 @@ https://github.com/dev48v/django-from-zero
 
 🔟 Full README — quickstart, architecture diagram, step-by-step guide
 
+
+
 💡 Every file has detailed comments explaining WHY, not just what. Written for any beginner who wants to learn Django by reading real code — with full clarity on each step.
+
+
 
 👉 If you're a beginner learning Django, clone it and read the commits one by one. Each commit = one concept. Each file = one lesson. Built from scratch, so nothing is hidden.
 
+
+
 🔥 This is Day 8 of a 50-day series. A new technology every day. Follow along!
 
+
+
 🌐 See all days: https://dev48v.infy.uk/techfromzero.php
+
+
 
 #TechFromZero #Day8 #Django #Python #ServerSideRendering #GNewsAPI #Render #LearnByDoing #OpenSource #BeginnerGuide #100DaysOfCode #CodingFromScratch
