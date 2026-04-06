@@ -11,3 +11,10 @@ urlpatterns = [
     #      include('news.urls') delegates to news/urls.py for all patterns.
     path("", include("news.urls")),
 ]
+
+
+# STEP 8: Custom 404 handler — uses our dark-themed 404 template.
+# WHY: handler404 tells Django which view to call when no URL pattern matches.
+#      We use Django's built-in page_not_found view, which renders templates/404.html
+#      automatically. This only activates when DEBUG=False.
+handler404 = "django.views.defaults.page_not_found"

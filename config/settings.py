@@ -135,3 +135,21 @@ USE_I18N = False
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# --- STEP 8: Production security settings ---
+# WHY: These settings only matter when DEBUG=False (production on Render).
+#      They protect against common web attacks.
+
+if not DEBUG:
+    # WHY: Render terminates SSL at its proxy and forwards requests over HTTP.
+    #      This header tells Django the original request was HTTPS, so it doesn't
+    #      reject the request or redirect infinitely.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # WHY: CSRF_TRUSTED_ORIGINS is required for POST requests in production.
+    #      Without it, Django blocks form submissions with a 403 Forbidden error.
+    #      We trust any .onrender.com subdomain.
+    CSRF_TRUSTED_ORIGINS = [
+        "https://*.onrender.com",
+    ]

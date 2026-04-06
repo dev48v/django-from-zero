@@ -1,0 +1,32 @@
+<!-- STEP 8: Custom 404 page — shown when a URL doesn't match any pattern.
+     WHY: Django's default 404 page is ugly and exposes project internals.
+     A custom 404 page maintains the dark theme, looks professional, and
+     guides the user back to the home page. This template is automatically
+     used when DEBUG=False and a view raises Http404. -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found | DjangoFromZero</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="nav-brand">
+                <span class="brand-icon">📰</span> DjangoFromZero
+            </a>
+        </div>
+    </nav>
+    <main class="container">
+        <div class="empty-state" style="padding: 120px 24px;">
+            <p class="empty-icon" style="font-size: 72px;">🔎</p>
+            <h1 style="font-size: 48px; margin-bottom: 16px;">404</h1>
+            <p class="empty-text">The page you're looking for doesn't exist.</p>
+            <a href="/" class="detail-link" style="margin-top: 32px;">← Back to headlines</a>
+        </div>
+    </main>
+</body>
+</html>
