@@ -3,11 +3,13 @@ Day 8 - React? Next.js? Nah. I built a full news aggregator with Django template
 🚀TechFromZero Series - DjangoFromZero
 
 This isn't a Hello World. It's a real server-rendered news aggregator:
+
 📐 GNews API → Django Views → Templates → HTML → Browser (zero JS, full SSR)
 
 🌐 Try it live: https://django-from-zero.onrender.com
 
 🔗 The full code (with step-by-step commits you can follow):
+
 https://github.com/dev48v/django-from-zero
 
 🧱 What I built (step by step):
