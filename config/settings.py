@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # WHY: We don't include auth, admin, sessions, or messages because this project
     #      has no database and no user accounts. Only what we actually use.
+    "news",
+    # WHY: Register our news app so Django discovers its templates, template tags,
+    #      and AppConfig. The string 'news' matches the name in news/apps.py.
 ]
 
 
