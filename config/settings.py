@@ -92,9 +92,15 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # --- Database ---
 # WHY: This project has NO database. We fetch everything from the GNews API
-#      on each request. Django requires a DATABASES setting, but we use an
-#      empty dict to signal "no database". This means no migrations needed.
-DATABASES = {}
+#      on each request. Django still requires a DATABASES setting with a
+#      'default' key, even if we never use it. Using SQLite with an in-memory
+#      database satisfies Django's requirement without creating any files.
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
 
 # --- Static files ---
