@@ -1,0 +1,36 @@
+# STEP 9: Render deploy config — Infrastructure as Code.
+# WHY: render.yaml defines the deployment configuration in the repo itself.
+#      Instead of clicking through a dashboard, the build command, start command,
+#      and environment variables are version-controlled. Push to GitHub, Render
+#      reads this file, and the app deploys automatically.
+
+services:
+  - type: web
+    name: django-from-zero
+    runtime: python
+    # WHY: The build step installs dependencies AND collects static files.
+    #      collectstatic copies CSS/JS from static/ to staticfiles/ so WhiteNoise
+    #      can serve them. --noinput skips the "are you sure?" prompt.
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    # WHY: gunicorn is the production WSGI server. Django's runserver is for dev only —
+    #      it's single-threaded and not security-hardened. gunicorn spawns multiple
+    #      worker processes and handles concurrent requests properly.
+    #      config.wsgi:application points to the WSGI callable in config/wsgi.py.
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: GNEWS_API_KEY
+        # WHY: sync: false means you must set this value manually in the Render dashboard.
+        #      API keys should never be in the repo, even in render.yaml.
+        sync: false
+      - key: SECRET_KEY
+        # WHY: generateValue: true makes Render auto-generate a random secret key.
+        #      This is more secure than using a hardcoded one — each deploy gets a unique key.
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        # WHY: .onrender.com allows any Render subdomain. This covers both your
+        #      auto-generated URL (django-from-zero.onrender.com) and any custom domain.
+        value: ".onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.12.3"
