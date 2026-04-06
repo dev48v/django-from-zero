@@ -14,4 +14,7 @@ app_name = "news"
 
 urlpatterns = [
     path("", views.home, name="home"),
+    # WHY: <int:index> tells Django to capture a number from the URL and pass it
+    #      as an integer argument to the view. /article/3/ calls article_detail(request, index=3).
+    path("article/<int:index>/", views.article_detail, name="detail"),
 ]

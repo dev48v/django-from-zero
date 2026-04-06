@@ -1,0 +1,45 @@
+<!-- STEP 6: Article detail template — full article view with timeago filter.
+     WHY: The detail page shows one article in full. We load our custom 'news_extras'
+     template tag library to use the |timeago filter. The article is passed from
+     the view as a dict (not a model) since we don't have a database. -->
+{% extends "base.html" %}
+{% load news_extras %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <!-- WHY: javascript:history.back() takes the user to their previous page
+         (could be home, category, or search). A hardcoded link to home would
+         lose their place if they came from a category or search page. -->
+    <a href="javascript:history.back()" class="detail-back">← Back to headlines</a>
+
+    <div class="detail-source">{{ article.source.name }}</div>
+    <h1 class="detail-title">{{ article.title }}</h1>
+
+    <div class="detail-meta">
+        <!-- WHY: |timeago is our custom filter from news_extras.py.
+             It converts "2026-04-06T14:30:00Z" to "2 hours ago". -->
+        <span>🕐 {{ article.publishedAt|timeago }}</span>
+        <span>📰 {{ article.source.name }}</span>
+    </div>
+
+    {% if article.image %}
+    <img src="{{ article.image }}" alt="{{ article.title }}" class="detail-image">
+    {% endif %}
+
+    <div class="detail-content">
+        <!-- WHY: GNews 'content' field contains the first ~200 chars of the article.
+             The full article is on the original source website. We show what we have
+             and link to the source for the complete read. -->
+        <p>{{ article.description }}</p>
+        {% if article.content %}
+        <p>{{ article.content }}</p>
+        {% endif %}
+    </div>
+
+    <a href="{{ article.url }}" target="_blank" rel="noopener" class="detail-link">
+        Read full article on {{ article.source.name }} →
+    </a>
+</div>
+{% endblock %}
