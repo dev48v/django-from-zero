@@ -1,0 +1,50 @@
+<!-- STEP 5: Home page template — displays a grid of top headlines.
+     WHY: This template extends base.html and only defines the content block.
+     The nav, CSS, and footer come from base.html automatically. This is
+     template inheritance in action — the child template is clean and focused. -->
+{% extends "base.html" %}
+
+{% block title %}Top Headlines{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1 class="page-title">📰 Top Headlines</h1>
+    <p class="page-subtitle">Latest news from around the world, powered by GNews API</p>
+</section>
+
+{% if articles %}
+<!-- WHY: CSS Grid handles the responsive layout. Three columns on desktop,
+     two on tablet, one on mobile — all done in CSS, no JavaScript needed. -->
+<div class="article-grid">
+    {% for article in articles %}
+    <article class="article-card">
+        {% if article.image %}
+        <!-- WHY: We link the entire card to the detail page using the article's
+             index in the loop. forloop.counter0 gives us a 0-based index. -->
+        <a href="{% url 'news:detail' forloop.counter0 %}">
+            <img src="{{ article.image }}" alt="{{ article.title }}"
+                 class="article-image" loading="lazy">
+        </a>
+        {% endif %}
+        <div class="article-body">
+            <div class="article-source">
+                {{ article.source.name }}
+                {% if article.publishedAt %}
+                <span class="article-date">· {{ article.publishedAt|slice:":10" }}</span>
+                {% endif %}
+            </div>
+            <h2 class="article-title">
+                <a href="{% url 'news:detail' forloop.counter0 %}">{{ article.title }}</a>
+            </h2>
+            <p class="article-description">{{ article.description }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p class="empty-icon">📭</p>
+    <p class="empty-text">No articles found. Check your API key or try again later.</p>
+</div>
+{% endif %}
+{% endblock %}

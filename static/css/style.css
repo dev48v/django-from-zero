@@ -1,0 +1,428 @@
+/* STEP 5: Dark theme CSS — consistent with the TechFromZero series design.
+   WHY: All projects in this series use the same dark color palette:
+        #0f172a (background), #1e293b (cards), #334155 (borders).
+        Day 8's accent color is blue (#3b82f6). The design is responsive
+        with CSS Grid — no framework needed, no JavaScript for layout. */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* WHY: CSS custom properties (variables) let us change the accent color
+       in one place. Every hover, border, and highlight references these. */
+    --bg-primary: #0f172a;
+    --bg-card: #1e293b;
+    --bg-hover: #334155;
+    --border: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: #3b82f6;
+    --accent-light: #60a5fa;
+    --accent-dim: rgba(59, 130, 246, 0.12);
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--accent-light);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.nav-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.nav-brand:hover { color: var(--accent-light); }
+
+.brand-icon { font-size: 24px; }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding: 6px 0;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.nav-link:hover { color: var(--text-primary); }
+
+/* --- Dropdown --- */
+/* WHY: Pure CSS dropdown — no JavaScript. The .dropdown-menu is hidden by default
+   and shown on :hover. The small delay on transition prevents flickering. */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-trigger { user-select: none; }
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 180px;
+    margin-top: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 200;
+}
+
+.dropdown:hover .dropdown-menu { display: block; }
+
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* --- Search --- */
+.search-form {
+    display: flex;
+    align-items: center;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.search-form:focus-within { border-color: var(--accent); }
+
+.search-input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+    width: 200px;
+}
+
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* --- Page Header --- */
+.page-header {
+    padding: 48px 0 32px;
+    text-align: center;
+}
+
+.page-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.page-subtitle {
+    color: var(--text-secondary);
+    font-size: 16px;
+}
+
+/* --- Article Grid --- */
+/* WHY: CSS Grid with auto-fill creates a responsive grid that adjusts column count
+   based on available space. No media queries needed for the basic layout. */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    padding-bottom: 48px;
+}
+
+.article-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.article-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.article-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.article-body {
+    padding: 20px;
+}
+
+.article-source {
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.article-date {
+    color: var(--text-muted);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.article-title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.article-title a {
+    color: var(--text-primary);
+}
+
+.article-title a:hover {
+    color: var(--accent-light);
+}
+
+.article-description {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    /* WHY: Line clamping limits text to 3 lines with ellipsis. This keeps
+       all cards the same height without JavaScript truncation. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 80px 24px;
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.empty-text {
+    color: var(--text-secondary);
+    font-size: 18px;
+}
+
+/* --- Footer --- */
+.footer {
+    margin-top: auto;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.footer-link {
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+/* --- Detail Page --- */
+.detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px 0;
+}
+
+.detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-light);
+    font-weight: 500;
+    margin-bottom: 24px;
+}
+
+.detail-back:hover { color: var(--accent); }
+
+.detail-source {
+    font-size: 14px;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.detail-title {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+}
+
+.detail-meta {
+    display: flex;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.detail-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    max-height: 480px;
+    object-fit: cover;
+}
+
+.detail-content {
+    font-size: 18px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.detail-content p {
+    margin-bottom: 16px;
+}
+
+.detail-link {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 24px;
+    background: var(--accent);
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.detail-link:hover {
+    background: var(--accent-light);
+    color: white;
+}
+
+/* --- Category Page --- */
+.category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.category-pill {
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.category-pill:hover,
+.category-pill.active {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent-light);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-wrap: wrap;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .search-input { width: 140px; }
+
+    .article-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-title {
+        font-size: 28px;
+    }
+
+    .page-title {
+        font-size: 26px;
+    }
+}
