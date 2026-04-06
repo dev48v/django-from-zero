@@ -1,0 +1,59 @@
+<!-- STEP 7: Category page — displays headlines filtered by news category.
+     WHY: Each category gets its own URL path (/category/technology/) instead of
+     a query parameter (/home?category=technology). Path-based URLs are more
+     RESTful and cleaner for navigation categories — they represent a "resource"
+     (technology news) rather than a filter on the home page. -->
+{% extends "base.html" %}
+{% load news_extras %}
+
+{% block title %}{{ current_category|title }} News{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1 class="page-title">{{ current_category|title }} News</h1>
+    <p class="page-subtitle">Top headlines in {{ current_category }}</p>
+</section>
+
+<!-- WHY: Category pills let users switch between categories without going back
+     to the dropdown. The current category gets the 'active' class for highlighting. -->
+<div class="category-pills">
+    {% for cat in categories %}
+    <a href="{% url 'news:category' cat %}"
+       class="category-pill {% if cat == current_category %}active{% endif %}">
+        {{ cat|title }}
+    </a>
+    {% endfor %}
+</div>
+
+{% if articles %}
+<div class="article-grid">
+    {% for article in articles %}
+    <article class="article-card">
+        {% if article.image %}
+        <a href="{{ article.url }}" target="_blank" rel="noopener">
+            <img src="{{ article.image }}" alt="{{ article.title }}"
+                 class="article-image" loading="lazy">
+        </a>
+        {% endif %}
+        <div class="article-body">
+            <div class="article-source">
+                {{ article.source.name }}
+                {% if article.publishedAt %}
+                <span class="article-date">· {{ article.publishedAt|timeago }}</span>
+                {% endif %}
+            </div>
+            <h2 class="article-title">
+                <a href="{{ article.url }}" target="_blank" rel="noopener">{{ article.title }}</a>
+            </h2>
+            <p class="article-description">{{ article.description }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p class="empty-icon">📭</p>
+    <p class="empty-text">No articles found in {{ current_category|title }}. Try again later.</p>
+</div>
+{% endif %}
+{% endblock %}

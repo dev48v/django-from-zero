@@ -1,0 +1,51 @@
+<!-- STEP 7: Search results template — displays articles matching a query.
+     WHY: Search uses GET (not POST) so the URL is bookmarkable: /search?q=python.
+     The search_query variable is passed from the view and pre-filled in the
+     nav search bar via base.html's {{ search_query|default:'' }}. -->
+{% extends "base.html" %}
+{% load news_extras %}
+
+{% block title %}Search: {{ search_query }}{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1 class="page-title">🔍 Search Results</h1>
+    {% if search_query %}
+    <p class="page-subtitle">Showing results for "<strong>{{ search_query }}</strong>"</p>
+    {% else %}
+    <p class="page-subtitle">Enter a search term to find articles</p>
+    {% endif %}
+</section>
+
+{% if articles %}
+<div class="article-grid">
+    {% for article in articles %}
+    <article class="article-card">
+        {% if article.image %}
+        <a href="{{ article.url }}" target="_blank" rel="noopener">
+            <img src="{{ article.image }}" alt="{{ article.title }}"
+                 class="article-image" loading="lazy">
+        </a>
+        {% endif %}
+        <div class="article-body">
+            <div class="article-source">
+                {{ article.source.name }}
+                {% if article.publishedAt %}
+                <span class="article-date">· {{ article.publishedAt|timeago }}</span>
+                {% endif %}
+            </div>
+            <h2 class="article-title">
+                <a href="{{ article.url }}" target="_blank" rel="noopener">{{ article.title }}</a>
+            </h2>
+            <p class="article-description">{{ article.description }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% elif search_query %}
+<div class="empty-state">
+    <p class="empty-icon">🔍</p>
+    <p class="empty-text">No articles found for "{{ search_query }}". Try a different search term.</p>
+</div>
+{% endif %}
+{% endblock %}

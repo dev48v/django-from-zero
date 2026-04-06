@@ -7,7 +7,7 @@ WHY: Django views are the "controller" in MVC. Each view receives a request,
 """
 from django.shortcuts import render
 from django.http import Http404
-from .news_client import fetch_top_headlines, CATEGORIES
+from .news_client import fetch_top_headlines, search_articles, CATEGORIES
 
 
 def home(request):
@@ -52,3 +52,48 @@ def article_detail(request, index):
         "categories": CATEGORIES,
     }
     return render(request, "news/article_detail.html", context)
+
+
+def search(request):
+    """
+    STEP 7: Search view — find articles matching a query string.
+
+    WHY: We use GET (not POST) for search because:
+         1. The URL is bookmarkable: /search?q=python
+         2. The URL is shareable: send someone a link to your search
+         3. The browser back button works naturally
+         4. No CSRF token needed (CSRF protects POST, not GET)
+
+    Django reads query parameters from request.GET — a dict-like object
+    that parses the URL's ?key=value pairs automatically.
+    """
+    query = request.GET.get("q", "").strip()
+    articles = search_articles(query) if query else []
+
+    context = {
+        "articles": articles,
+        "search_query": query,
+        "categories": CATEGORIES,
+    }
+    return render(request, "news/search_results.html", context)
+
+
+def category(request, cat):
+    """
+    STEP 7: Category view — display headlines filtered by news category.
+
+    WHY: The category comes from the URL path (/category/technology/), not from
+         a query parameter. In Django, path('<str:cat>') captures the URL segment
+         and passes it as a keyword argument to the view function. We validate
+         that the category exists in our CATEGORIES list to prevent API errors.
+    """
+    if cat not in CATEGORIES:
+        raise Http404(f"Category '{cat}' not found")
+
+    articles = fetch_top_headlines(category=cat)
+    context = {
+        "articles": articles,
+        "categories": CATEGORIES,
+        "current_category": cat,
+    }
+    return render(request, "news/category.html", context)

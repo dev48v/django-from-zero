@@ -17,4 +17,10 @@ urlpatterns = [
     # WHY: <int:index> tells Django to capture a number from the URL and pass it
     #      as an integer argument to the view. /article/3/ calls article_detail(request, index=3).
     path("article/<int:index>/", views.article_detail, name="detail"),
+    # WHY: 'search' must come BEFORE any path with <str:...> to prevent Django
+    #      from matching the word "search" as a dynamic URL parameter.
+    path("search/", views.search, name="search"),
+    # WHY: <str:cat> captures any string from the URL segment.
+    #      /category/technology/ calls category(request, cat='technology').
+    path("category/<str:cat>/", views.category, name="category"),
 ]
