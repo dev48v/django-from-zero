@@ -117,14 +117,16 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 #      WhiteNoise serves files from this folder. It must be different from STATICFILES_DIRS.
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WHY: CompressedManifestStaticFilesStorage does two things:
+# WHY: In production (DEBUG=False), CompressedManifestStaticFilesStorage:
 #      1. Adds a hash to filenames (style.abc123.css) for cache busting
 #      2. Compresses files with gzip/brotli for faster downloads
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+#      In development (DEBUG=True), we skip this because it requires collectstatic.
+if not DEBUG:
+    STORAGES = {
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 
 # --- GNews API ---

@@ -1,7 +1,7 @@
-<!-- STEP 5: Base template — the layout that every page inherits from.
-     WHY: Template inheritance is Django's way of keeping HTML DRY (Don't Repeat Yourself).
-     Every page extends this file and fills in {% block content %}. The nav, header,
-     footer, and CSS are defined once here — change them in one place, every page updates. -->
+{# STEP 5: Base template — the layout that every page inherits from.
+   WHY: Template inheritance is Django's way of keeping HTML DRY.
+   Every page extends this file and fills in the content block. The nav, header,
+   footer, and CSS are defined once here — change them in one place, every page updates. #}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -9,13 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}News Aggregator{% endblock %} | DjangoFromZero</title>
-    <!-- WHY: {% load static %} at the top enables the {% static %} tag.
-         Django resolves {% static 'css/style.css' %} to /static/css/style.css in dev
-         and to /static/css/style.abc123.css in production (cache-busted by WhiteNoise). -->
+    {# WHY: load static at the top enables the static tag.
+       Django resolves static paths to /static/... in dev
+       and to hashed filenames in production (cache-busted by WhiteNoise). #}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <!-- Navigation -->
+    {# Navigation #}
     <nav class="navbar">
         <div class="container nav-container">
             <a href="{% url 'news:home' %}" class="nav-brand">
@@ -23,8 +23,8 @@
             </a>
             <div class="nav-links">
                 <a href="{% url 'news:home' %}" class="nav-link">Home</a>
-                <!-- WHY: Categories dropdown uses pure CSS (no JavaScript).
-                     Hover triggers the dropdown via CSS :hover on the parent. -->
+                {# WHY: Categories dropdown uses pure CSS (no JavaScript).
+                   Hover triggers the dropdown via CSS :hover on the parent. #}
                 <div class="dropdown">
                     <span class="nav-link dropdown-trigger">Categories ▾</span>
                     <div class="dropdown-menu">
@@ -35,8 +35,8 @@
                         {% endfor %}
                     </div>
                 </div>
-                <!-- WHY: Search form uses GET (not POST) so the search URL is bookmarkable
-                     and shareable. GET /search?q=python is a stable link you can send to someone. -->
+                {# WHY: Search form uses GET (not POST) so the URL is bookmarkable
+                   and shareable. GET /search?q=python is a stable link. #}
                 <form action="{% url 'news:search' %}" method="get" class="search-form">
                     <input type="text" name="q" placeholder="Search news..."
                            value="{{ search_query|default:'' }}" class="search-input">
@@ -46,12 +46,12 @@
         </div>
     </nav>
 
-    <!-- Main content -->
+    {# Main content #}
     <main class="container">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
+    {# Footer #}
     <footer class="footer">
         <div class="container">
             <p>Day 8 of <a href="https://dev48v.infy.uk/techfromzero.php" class="footer-link">TechFromZero</a>
